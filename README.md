@@ -11,6 +11,12 @@ Parametric tower experiment built with Three.js and Vite. It simulates a 3D cell
 - 3D cellular automaton with adjustable birth/survival rules
 - Live GUI controls for grid size, seed density, and animation
 - Orbit camera controls and dynamic lighting
+- Multi-tower layout controls (count + spacing)
+- Material modes, wireframe overlay, and SSAO
+- Lighting presets, exposure, and environment color controls
+- Gradient and age-based color modes
+- Seed symmetry modes and rule shuffling
+- Export to OBJ, GLTF, and PLY
 
 ## Getting Started
 1. Install dependencies: `npm install`
@@ -22,3 +28,18 @@ Parametric tower experiment built with Three.js and Vite. It simulates a 3D cell
 - Pan: right mouse drag (or ctrl + left drag)
 - Zoom: mouse wheel
 - Use the on-screen GUI to tweak grid size, seed density, rules, and playback
+
+## Deployment
+Live demo: https://sbrgkmn.github.io/260201_ParametricTower/
+
+### Build locally
+1. Install dependencies: `npm install`
+2. Build production assets: `npm run build`
+3. Preview locally: `npm run preview` and open the printed URL
+
+### Deploy to GitHub Pages
+This repo uses a `gh-pages` branch that contains the built static assets.
+
+1. Build locally: `npm run build`
+2. Replace the contents of `gh-pages` with the `dist/` output (root should contain `index.html` and `assets/`).
+3. Push `gh-pages` to GitHub. Pages is configured to serve from `gh-pages / (root)`.
