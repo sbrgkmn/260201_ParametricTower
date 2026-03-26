@@ -1,6 +1,6 @@
 :root {
   color-scheme: light;
-  background-color: #0e1014;
+  background-color: #ffffff;
   font-family: "Space Grotesk", system-ui, sans-serif;
 }
 
@@ -33,7 +33,7 @@ canvas {
   position: absolute;
   left: 16px;
   top: 16px;
-  color: #eaeef5;
+  color: #3a4454;
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;

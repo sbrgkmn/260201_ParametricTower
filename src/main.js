@@ -35,8 +35,8 @@ const params = {
   gradientMode: "neighbors",
   faceColor: "#ffffff",
   edgeColor: "#1f2630",
-  backgroundColor: "#0e1014",
-  groundColor: "#0f1218",
+  backgroundColor: "#ffffff",
+  groundColor: "#ffffff",
   shadowsEnabled: true,
   wireframeEnabled: true,
   wireframeLinewidth: 1,
@@ -86,6 +86,7 @@ let dirLight = null;
 let fillLight = null;
 let rimLight = null;
 let groundPlane = null;
+let groundGrid = null;
 
 const rulePresets = [
   { name: "Spine Rise", birth: [4, 6], survive: [3, 7] },
@@ -154,7 +155,7 @@ function init() {
   scene.background = new THREE.Color(params.backgroundColor);
   scene.fog = null;
 
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 400);
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
   camera.position.set(40, 34, 60);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -201,12 +202,28 @@ function init() {
 
   groundPlane = new THREE.Mesh(
     new THREE.PlaneGeometry(10000, 10000),
-    new THREE.MeshStandardMaterial({ color: params.groundColor, roughness: 1, metalness: 0 })
+    new THREE.MeshBasicMaterial({
+      color: params.groundColor,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1
+    })
   );
   groundPlane.rotation.x = -Math.PI / 2;
   groundPlane.position.y = calcGridBaseY();
-  groundPlane.receiveShadow = params.shadowsEnabled;
+  groundPlane.receiveShadow = false;
   scene.add(groundPlane);
+
+  groundGrid = new THREE.GridHelper(10000, 400, 0x000000, 0x000000);
+  groundGrid.position.y = calcGridBaseY() + 0.02;
+  const gridMaterials = Array.isArray(groundGrid.material) ? groundGrid.material : [groundGrid.material];
+  for (const material of gridMaterials) {
+    material.transparent = false;
+    material.opacity = 1;
+    material.depthWrite = false;
+  }
+  groundGrid.renderOrder = 1;
+  scene.add(groundGrid);
   applyLightingPreset(params.lightingPreset);
   syncEnvironment();
 
@@ -586,6 +603,9 @@ function updateGroundPlanePosition() {
   if (groundPlane) {
     groundPlane.position.y = calcGridBaseY();
   }
+  if (groundGrid) {
+    groundGrid.position.y = calcGridBaseY() + 0.02;
+  }
 }
 
 function calcGridBaseY() {
@@ -699,7 +719,7 @@ function syncEnvironment() {
     instancedSolid.receiveShadow = params.shadowsEnabled;
   }
   if (groundPlane) {
-    groundPlane.receiveShadow = params.shadowsEnabled;
+    groundPlane.receiveShadow = false;
   }
   if (instancedWire) {
     instancedWire.visible = params.wireframeEnabled;
